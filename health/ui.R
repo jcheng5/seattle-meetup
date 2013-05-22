@@ -9,13 +9,26 @@ geochart <- function(id, options=list()) {
   tags$div(id=id, class="shiny-geochart-output", `data-options`=RJSONIO::toJSON(options))
 }
 
+googleLineChart <- function(id, options=list()) {
+  tags$div(id=id, class="google-linechart-output", `data-options`=RJSONIO::toJSON(options))
+}
+
 shinyUI(pageWithSidebar(
   headerPanel("Map demo"),
   sidebarPanel(
     geochartPrereqs,
-    sliderInput('factor', 'Factor', min=1, max=100, value=1)
+    uiOutput('yearUI'),
+    selectInput('indicator', 'Indicator', indicatorChoices),
+    textOutput('indicatorDesc')
   ),
   mainPanel(
-    geochart('map')
+    tabsetPanel(
+      tabPanel('Map', geochart('map')),
+      tabPanel('Data', tableOutput('table')),
+      tabPanel('Histogram', plotOutput('hist')),
+      tabPanel('Trends',
+               googleLineChart('trends', options=list(height=600, animation.duration=200)))
+    )
+    
   )
 ))
