@@ -14,7 +14,7 @@ googleLineChart <- function(id, options=list()) {
 }
 
 shinyUI(pageWithSidebar(
-  headerPanel("Map demo"),
+  headerPanel("Health Stats Explorer"),
   sidebarPanel(
     geochartPrereqs,
     uiOutput('yearUI'),
