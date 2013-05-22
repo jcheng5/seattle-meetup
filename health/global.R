@@ -39,3 +39,10 @@ filterByYear <- function(data, year) {
   data$Year <- NULL
   data
 }
+
+preserveStructure <- function(dataFrame) {
+  structure(
+    lapply(names(dataFrame), function(name) {I(dataFrame[[name]])}),
+    names=names(dataFrame)
+  )
+}

@@ -56,7 +56,7 @@ shinyServer(function(input, output, session) {
 
     casted <- dcast(data, Year ~ Country_Name)
 
-    list(data = casted,
+    list(data = preserveStructure(casted),
          options = list(
            hAxis = list(viewWindowMode = 'explicit', viewWindow = list(
              min = hrange[1], max = hrange[2]
