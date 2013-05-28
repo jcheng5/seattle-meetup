@@ -38,7 +38,17 @@ shinyServer(function(input, output, session) {
          )
     )
   })
-  
+
+  output$countryPlot <- renderPlot({
+    if (is.null(input$map_selection))
+      return(NULL)
+    df <- filterByCountry(indicatorData(), input$map_selection)
+    plot(df, type='n', ylim=range(indicatorData()$value))
+    title(main = paste(input$map_selection))
+    lines(df$Year, df$value, type='l')
+    abline(v=input$year, col=3, lty=3)
+  })
+
   output$table <- renderTable({
     data()
   }, include.rownames = FALSE, include.colnames = FALSE)
@@ -52,7 +62,7 @@ shinyServer(function(input, output, session) {
     data <- indicatorData()
     hrange <- range(data$Year)
     vrange <- range(data$value)
-    data <- data[data$Year <= input$year,]
+    #data <- data[data$Year <= input$year,]
 
     casted <- dcast(data, Year ~ Country_Name)
 

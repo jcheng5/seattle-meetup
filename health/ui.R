@@ -23,7 +23,7 @@ shinyUI(pageWithSidebar(
   ),
   mainPanel(
     tabsetPanel(
-      tabPanel('Map', geochart('map')),
+      tabPanel('Map', geochart('map'), plotOutput('countryPlot', height='300px')),
       tabPanel('Data', tableOutput('table')),
       tabPanel('Histogram', plotOutput('hist')),
       tabPanel('Trends',

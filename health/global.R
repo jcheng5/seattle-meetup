@@ -40,6 +40,12 @@ filterByYear <- function(data, year) {
   data
 }
 
+filterByCountry <- function(data, country) {
+  data <- data[data$Country_Name == country,]
+  data$Country_Name <- NULL
+  data
+}
+
 preserveStructure <- function(dataFrame) {
   structure(
     lapply(names(dataFrame), function(name) {I(dataFrame[[name]])}),

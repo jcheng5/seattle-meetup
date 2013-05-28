@@ -27,7 +27,7 @@ function waitForGoogleLoad(func) {
   }
 }
 
-function constructGoogleChart(el, dataObj, Chart) {
+function constructGoogleChart(el, name, dataObj, Chart) {
   if (dataObj == null)
     return;
   
@@ -39,10 +39,21 @@ function constructGoogleChart(el, dataObj, Chart) {
     chart = new Chart(el);
     $el.data('geochart', chart);
     chart.options = JSON.parse($el.attr('data-options'));
+    google.visualization.events.addListener(chart, 'select', function() {
+      var value = null;
+      var selection = chart.getSelection();
+      if (selection && selection.length > 0) {
+        value = chart.data.getValue(selection[0].row, 0);
+      }
+      var update = {};
+      update[name + '_selection'] = value;
+      Shiny.shinyapp.sendInput(update);
+    });
   }
   
   var currentOptions = $.extend(true, chart.options, dataObj.options);
   chart.draw(data, currentOptions);
+  chart.data = data;
 }
 
 var GeochartOutputBinding = new Shiny.OutputBinding();
@@ -51,8 +62,9 @@ $.extend(GeochartOutputBinding, {
     return $(scope).find('.shiny-geochart-output');
   },
   renderValue: function(el, dataObj) {
+    var self = this;
     waitForGoogleLoad(function() {
-      constructGoogleChart(el, dataObj, google.visualization.GeoChart);
+      constructGoogleChart(el, self.getId(el), dataObj, google.visualization.GeoChart);
     });
   }
 });
@@ -64,8 +76,9 @@ $.extend(GoogleLineChartOutputBinding, {
     return $(scope).find('.google-linechart-output');
   },
   renderValue: function(el, dataObj) {
+    var self = this;
     waitForGoogleLoad(function() {
-      constructGoogleChart(el, dataObj, google.visualization.LineChart);
+      constructGoogleChart(el, self.getId(el), dataObj, google.visualization.LineChart);
     });
   }
 
