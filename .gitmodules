@@ -1,6 +1,6 @@
 [submodule "dashboard"]
 	path = dashboard
-	url = git@github.com:wch/shiny-jsdemo
+	url = https://github.com/wch/shiny-jsdemo
 [submodule "g3plot"]
 	path = g3plot
 	url = https://github.com/alexbbrownIntel/g3plot
