@@ -23,7 +23,12 @@ shinyUI(pageWithSidebar(
   ),
   mainPanel(
     tabsetPanel(
-      tabPanel('Map', geochart('map'), plotOutput('countryPlot', height='300px')),
+      tabPanel('Map',
+               geochart('map'),
+               conditionalPanel(condition='input.map_selection',
+                                checkboxInput('normalizeCountryPlot', 'Normalize', TRUE)),
+               plotOutput('countryPlot', height='300px')
+      ),
       tabPanel('Data', tableOutput('table')),
       tabPanel('Histogram', plotOutput('hist')),
       tabPanel('Trends',
