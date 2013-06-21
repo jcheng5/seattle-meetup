@@ -3,7 +3,6 @@ library(ggplot2)
 shinyServer(function(input, output, session) {
 
   data <- reactive({
-    cat("Here1\n")
     if (is.null(input$file))
       return(NULL)
     else if (identical(input$format, 'CSV'))
@@ -14,7 +13,6 @@ shinyServer(function(input, output, session) {
  
   observe({
     df <- data()
-    cat("Here2\n")
     str(names(df))
     if (!is.null(df)) {
       updateSelectInput(session, 'x', choices = names(df))
@@ -23,7 +21,6 @@ shinyServer(function(input, output, session) {
       updateSelectInput(session, 'facet_row', choices = c(None='.', names(df)))
       updateSelectInput(session, 'facet_col', choices = c(None='.', names(df)))
     }
-    cat("Here3\n")
   })
  
   output$plot <- renderPlot({
